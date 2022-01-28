@@ -2,23 +2,47 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    </meta>
+    <meta charset="utf-8"></meta>
+    <meta author="Michael Pusterhofer"></meta>
     <style>
-        #parameter-form {
-            background-color: lightgray;
-            width:200px;
+
+        #parameter-form fieldset p {
+            float:left;
         }
 
-        #parameter-form input {}
+        #parameter-form::after{
+            clear: both;
+        }
 
         #parameter-form label {
+            display: inline-block;
+            margin-left: 20px;
+            height: 100%;
+            vertical-align: middle;
+        }
+
+        #parameter-form input {
+            display: inline-block;
             width: 100px;
+        }
+
+        #parameter-form label mjx-container {
+            float: right;
         }
 
         body {
             width: 800px;
             margin: auto;
+        }
+
+        #plots {
+            display: flex;
+        }
+
+        .legendLayer .background {
+            fill: rgba(255, 255, 255, 0.85);
+            stroke: rgba(0, 0, 0, 0.85);
+            stroke-width: 1;
         }
     </style>
 </head>
@@ -47,41 +71,67 @@
     <script language="JavaScript">
         var kb = 1.380658E-23;
         var qe = 1.602176565E-19;
+        var epsilon_vac = 8.8541878128e-12;
         var d1 = []
         var d2 = []
+        var d3 = []
+        var d4 = []
         function plotn() {
-            var A = parseFloat($("#A").val())
-            var NA = parseFloat($("#NA").val())
-            var ND = parseFloat($("#ND").val())
-            var VBI = parseFloat($("#VBI").val())
-            var epsilon = parseFloat($("#epsilon").val())
+            var NA = parseFloat($("#NA").val()) * 1e6
+            var ND = parseFloat($("#ND").val()) * 1e6
+            var epsilon = parseFloat($("#epsilon").val())*epsilon_vac
             var Vmin = parseFloat($("#Vmin").val())
             var Vmax = parseFloat($("#Vmax").val())
             var T = parseFloat($("#T").val())
-            var pn0 = parseFloat($("#pn0").val())
-            var Lp = parseFloat($("#LP").val())
+            var Nc300 = parseFloat($("#Nc").val()) * 1e6
+            var Nv300 = parseFloat($("#Nv").val()) * 1e6
+            var Eg = parseFloat($("#Eg").val()) * qe
+            var Lp = parseFloat($("#LP").val()) * 1e-6
+            var Ln = parseFloat($("#LN").val()) * 1e-6
+            var ni = Math.sqrt(Nc300*Nv300*Math.pow((T/300),3)*Math.exp(-Eg/(kb*T)))
+            var pn0 = Math.pow(ni,2)/ND
+            var np0 = Math.pow(ni,2)/NA
+            var VBI = (Eg-kb*T*Math.log(Nc300*Nv300*Math.pow((T/300),3)/(NA*ND)))/qe
+            console.log("pn0",pn0,ni,VBI)
+
+            $("#VBI_val").html(VBI.toPrecision(3))
+            $("#pn0_val").html((pn0*1e-6).toPrecision(3))
+            $("#np0_val").html((np0*1e-6).toPrecision(3))
+            $("#ni_val").html((ni*1e-6).toPrecision(3))
             d1.length = 0
+           
             for (k = 1; k < 201; k++) {
                 var V = (k - 1) * (VBI - Vmin) / 199 + Vmin
-                d1[k] = [V, 2 * Math.pow(A, 2) * (NA + ND) * (VBI - V) / (epsilon * qe * ND * NA)]
+                var W = Math.sqrt(epsilon*2*(NA + ND)*(VBI-V)/( qe * ND * NA)) 
+                var Cj = epsilon / W
+                console.log(V,W*1e6,Cj*1e9*1e-4)
+                d1[k] = [V,  1/Math.pow(Cj*1e5,2)]
             }
 
             d2.length = 0
-            for (k = 1; k < 201; k++) {
-                var V = (k - 1) * (Vmax - Vmin) / 199 + Vmin
-                d2[k] = [V, Math.pow(qe, 2) * pn0 * Lp / (kb * T) * Math.exp(qe * V / (kb * T))]
+            d3.length = 0
+            d4.length = 0
+            for (k = 1; k < 201+100; k++) {
+                var V = (k - 1) * (Vmax - 0) / (199+100) + 0 
+                var Cd = Math.pow(qe, 2) * pn0 * Lp / (kb * T) * Math.exp(qe * V / (kb * T))
+                d2[k] = [V, Cd*1e5]
+                var W = Math.sqrt(epsilon*2*(NA + ND)*(VBI-V)/( qe * ND * NA)) 
+                var Cj = epsilon / W
+                d3[k] = [V,Cj]
+                var Cdp = Math.pow(qe, 2) * np0 * Ln / (kb * T) * Math.exp(qe * V / (kb * T))
+                d4[k] = [V, Cdp*1e5]
             }
 
-
-            var p1 = $.plot($("#plot_C_T"), [d1], {
+            var data = [
+                { data: d1, color: "black", lines: {show:true}, label: "Cd"}]
+            var p1 = $.plot($("#plot_C_T"), data, {
                 series: {
                     color: "rgb(0, 0, 0)",
                     lines: { show: true }
                 },
                 yaxis: {
                     position: 'left',
-                    axisLabel: "1/Cj^2 [F]",
-                    showTicks: 'none',
+                    axisLabel: "A^2/C_j^2 [cm^4/nF^2]",
                     show: true,
                     mode: "linear"
                 },
@@ -90,18 +140,24 @@
                     axisLabel: 'V [V]',
                     showTicks: 'none',
                     show: true
+                },
+                legend: {
+                    position: "ne",
+                    show: true
                 }
             });
 
-            var p2 = $.plot("#plot_C_D", [d2], {
+            var data = [
+                { data: d2, color: "red", lines: {show:true}, label: "Cd n-side"},
+                { data: d4, color: "green", lines: {show:true}, label: "Cd p-side"},
+                { data: d3, color: "black", lines: {show:true}, label: "Cj"}]
+            var p2 = $.plot("#plot_C_D", data, {
                 series: {
-                    color: "rgb(0, 0, 0)",
                     lines: { show: true }
                 },
                 yaxis: {
                     position: 'left',
-                    axisLabel: "Diffusion capacitance [F/cm^2]",
-                    showTicks: 'none',
+                    axisLabel: "C/A [nF/cm^2]",
                     show: true,
                     mode: "log"
                 },
@@ -110,6 +166,10 @@
                     axisLabel: 'V [V]',
                     showTicks: 'none',
                     show: true
+                },
+                legend: {
+                    position: "nw",
+                    show: true
                 }
             });
             MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
@@ -117,85 +177,129 @@
 
     </script>
 
-    <h1>Capacitance of a diode</h1>
-    <p>In a diode, two capacitances play a role. In reverse bias, the depletion capacitance $C_j$ is dominant, which
-        behaves
-        similarly to a plate capacitor.
-        In forward bias, the diffusive capacitance is dominant, which is caused by the diffusion current that makes it
-        through the reduced depletion width.
+    <h1>Capacitance of a Diode</h1>
+    <p>A diode has two capacitances and their individual contributions to the total 
+        capacitance depends on the applied bias. 
+        <ul>
+            <li>In reverse bias, the depletion capacitance $C_j$ is dominant, which
+                behaves similarly to a plate capacitor.</li>
+            <li>In forward bias, the diffusive capacitance is dominant, which is caused
+                    by the diffusion current that makes it through the reduced depletion width.</li>
+        </ul>    
     </p>
     <p>
-        In general, capacity is defined as the change of charge with respect to the applied voltage.
+        In general, a capacitance is defined as the change of charge with respect to the applied voltage.
+        $$C=\frac{dQ}{dU}$$
     </p>
-    <p>$$C=\frac{dQ}{dU}$$</p>
+
     <h2>
-        Depletion Capacitance / reverse bias
+        Depletion Capacitance / Reverse Bias
     </h2>
     <p>
         In reverse bias, the depletion width grows bigger and the current through the depletion width is low. This
-        resembles a capacitor where the contacts are highly conductive and the dielectric has a high resistivity and
-        allows for the formation of an electric field.
+        resembles a capacitor where the contacts are highly conductive and the dielectric has a high resistivity. 
     </p>
-    <p>The capacity of a plate capacitor is defined by the dielectric constant \(\epsilon\) of the dielectric, the
-        area \(A\) of the opposing plates and the distance \(d\) of these plates.</p>
-    <p>$$C = \epsilon \frac{A}{d}$$</p>
-    <p>Using the definition of the depletion width \(W\) of a PN junction the distance \(d\) can be expressed as</p>
-    <p>$$d = W = \sqrt{\frac{2\epsilon (N_A+N_D) (V_{bi}-V)}{qN_DN_A}}.$$</p>
-    By replacing the \(d\) width \(W\) an expression for the transition capacity can be obtained. This expression shows
-    that it depends on the build-in voltage \(V_{bi}\) of the diode, the doping concentrations of dopants \(N_D\) and
-    acceptors \(N_A\), the dielectric constant \(epsilon\), and the applied Voltage on the p side (assuming the n side
-    is
-    grounded).
-    <p>$$C_j=\epsilon\frac{A}{W}=A \sqrt{\frac{\epsilon qN_DN_A}{2 (N_A+N_D) (V_{bi}-V)}}$$</p>
-
+    <p>The capacitance of a plate capacitor is defined by the dielectric constant \(\epsilon\), the
+        area \(A\) of the opposing plates and the distance \(d\) of these plates.
+        $$C = \epsilon \frac{A}{d}$$
+    </p>
+    <p>
+        Using the definition of the depletion width \(W\) of a PN junction the distance \(d\) can be expressed as
+        $$d = W = \sqrt{\frac{2\epsilon (N_A+N_D) (V_{bi}-V)}{qN_DN_A}}.$$
+    </p>
+    <p>
+    By replacing the \(d\) width \(W\) an expression for the depletion capacitance is obtained. This expression shows
+    that it depends on the build-in voltage \(V_{bi}\) of the diode, the doping concentrations of donors \(N_D\) and
+    acceptors \(N_A\), the dielectric constant \(epsilon\), and the applied forward Voltage.
+    $$C_j=\epsilon\frac{A}{W}=A \sqrt{\frac{\epsilon qN_DN_A}{2 (N_A+N_D) (V_{bi}-V)}}$$
+    </p>
+    <p>
     This relation can then be used to determine the built-in voltage by fitting a line for \(C^{-2}(V)\)
-    <p>$$\frac{1}{C_j^2}=\frac{2  (N_A+N_D) (V_{bi}-V)}{\epsilon A^2 qN_DN_A}=
-        \frac{2  (N_A+N_D) V_{bi}}{\epsilon A^2 qN_DN_A}-\frac{2  (N_A+N_D) V}{\epsilon A^2 qN_DN_A}$$</p>
+        $$\frac{1}{C_j^2}=\frac{2 (N_A+N_D) (V_{bi}-V)}{\epsilon A^2 qN_DN_A}=
+        \frac{2 (N_A+N_D) V_{bi}}{\epsilon A^2 qN_DN_A}-\frac{2 (N_A+N_D) V}{\epsilon A^2 qN_DN_A}$$</p>
     <p>
-    <h3>One-sided junctions</h3>
 
-    For a one-sided junction where one side is heavily doped or a Schottky diode, the relation simplifies and can be
-    used to determine the doping and the built-in voltage when \(A^2/C^2(V)\) is fitted by a line.
-    $$N_A>>N_D \rightarrow \frac{A^2}{C_j^2}=\frac{2(V_{bi}-V)}{\epsilon q N_D} $$
-    </p>
+    <h3>One-sided junctions</h3>
     <p>
+    For a one-sided junction which can be obatined by heavy dopeing of one side or by using a Schottky diode, the expression simplifies.
+    This new expression can then be used to determine the doping concentration and the built-in voltage when the inverse of the squared specific 
+    capaitance \(A^2/C^2(V)\) is fitted by a line.
+    
+        $$N_A>>N_D \rightarrow \frac{A^2}{C_j^2}=\frac{2(V_{bi}-V)}{\epsilon q N_D} $$
         $$N_D>>N_A \rightarrow \frac{A^2}{C_j^2}=\frac{2(V_{bi}-V)}{\epsilon q N_A} $$
     </p>
-    <div id="plot_C_T" style="width:400px;height:300px"></div>
-    
-    <form id="parameter-form">
-        <fieldset name="Parameters">
-            <p><label>$A [cm^2]$</label> <input type="number" id="A" value=1></p>
-            <p><label>$N_D [1/cm^3]$</label> <input type="number" id="ND" value=1e15></p>
-            <p><label>$N_A [1/cm^3]$</label> <input type="number" id="NA" value=1e15></p>
-            <p><label>$V_{BI} [V]$</label> <input type="number" id="VBI" value=0.7></p>
-            <p><label>$\epsilon$</label> <input type="number" id="epsilon" value=1.4></p>
-            <p><label>$L_p [cm]$</label> <input type="number" id="LP" value=1e-6></p>
-            <p><label>$p_{n0} [1/cm^3]$</label> <input type="number" id="pn0" value=1e12></p>
-            <p><label>$T$ [$K$]</label> <input type="number" id="T" value=300></p>
-            <p><label>$V_{min}$ [$V$]</label> <input type="number" id="Vmin" value=-3></p>
-            <p><label>$V_{max}$ [$V$]</label> <input type="number" id="Vmax" value=3></p>
-        </fieldset>
-    </form>
-    
-    <h2>
-        Diffusion Capacitance / forward bias
-    </h2>
-    Due to the small depletion width in forward bias additional minority carriers get injected into the neutral regions
-    of the PN junction.
-    These carriers are stored there and the concentraion drops exponentially with the distance from the depletion
-    region.
-    To calculate the additionally stored minority carriers in the neutral n side the denisty of carriers can be
-    integrated over the neutral n side.
 
-    $$Q_p = q \int_{x_n}^{\infty} p_{n0}\left(\exp\left(\frac{qV}{k_B
+    <h2>
+        Diffusion Capacitance / Forward Bias
+    </h2>
+    <p>Due to the small depletion width in forward bias additional minority carriers get injected into the neutral regions
+        of the PN junction. These carriers are stored in the neutral region and their concentraions drops exponentially with the distance from the depletion.
+        To calculate the additionally stored minority carriers in the neutral n side the denisty of exsess minority carriers is therefore
+        integrated over the neutral n side.
+    </p>
+    <p>
+    $$\frac{Q_p}{A} = q \int_{x_n}^{\infty} p_{n0}\left(\exp\left(\frac{qV}{k_B
     T}\right)-1\right)\exp\left({\frac{x_n-x}{L_p}}\right)dx =
     qp_{n0}L_p\left(\exp\left(\frac{qV}{k_B T} \right)-1\right)$$
+    </p>
+    <p>
+    Here $p_{n0}$ is the equilibrium minority carrier concentration on the n-side, $x_n$ is the position of the deplection zone edge,
+    and $L_p$ is the diffusion length for the minority carriers.
+    By using the definition of the capacitance the specific diffusion capacitance caused by the stored holes on the n-side can be calculated as:
+    $$\frac{C_{D,p}}{A} = \frac{q^2p_{n0}L_p}{k_B T }\exp\left(\frac{qV}{k_B T }\right)$$
 
-    Here $p_{n0}$ is the equilibrium minority carrier concentration on the n-side,  $x_n$ is the position of this edge, and $L_p$ is the diffusion length for the minority carriers.
-    By using the definition of the capacitance the specific diffusion capacitance can be calculated as:
-    $$C_D = \frac{q^2p_{n0}L_p}{k_B T }\exp\left(\frac{qV}{k_B T }\right)$$
-    <div id="plot_C_D" style="width:400px;height:300px"></div>
+    For the p-side a similar calculation can be done using the stored electrons.
+    </p>
+    <p>
+        The minority carrier concentration or the built-in potential can be calculated using
+        the doping concentraions $N_A$ and $N_D$, the band gap $E_g$, the 
+        temperature $T$, and the intrinsic 
+        carrier concentrations $N_c$ and $N_v$.
+        $$n_i^2 = Nc(300) Nv(300) \left(\frac{T}{300}\right)^3 \exp\left(-\frac{Eg}{kb T}\right), \quad  p_{n0} = \frac{n_i^2}{N_D}, \quad n_{p0} = \frac{n_i^2}{N_A} $$
+    </p>
+    <p>
+        $$V_{bi} = E_g - k_b T \ln\left(\frac{Nc(300) Nv(300) \left(\frac{T}{300}\right)^3}{N_A N_D}\right)$$ 
+    </p>
+
+
+    <div style="display:flex;">
+    <p style="padding-right:2em;">$V_{bi}=$<span id="VBI_val"></span> $eV$ </p>
+    <p style="padding-right:2em;">$p_{n0}=$<span id="pn0_val"></span> $1/cm^3$ </p>
+    <p style="padding-right:2em;">$n_{p0}=$<span id="np0_val"></span> $1/cm^3$ </p>
+    <p style="padding-right:2em;">$n_i=$<span id="ni_val"></span> $1/cm^3$ </p>
+    </div>
+    <div id="app">
+        <div id="plots">
+        <div id="plot_C_T" style="width:400px;height:300px"></div>
+        <div id="plot_C_D" style="width:400px;height:300px"></div>
+        </div>
+        <form id="parameter-form">
+            <fieldset>
+                <p><label>$N_D [1/cm^3]$</label> <input type="number" id="ND" value=1e15></p>
+                <p><label>$N_A [1/cm^3]$</label> <input type="number" id="NA" value=1e15></p>
+            </fieldset>
+            <fieldset>
+                <p><label>$\epsilon [\epsilon_0]$</label> <input type="number" id="epsilon" value=12></p>
+                <p><label>$L_p [\mu m]$</label> <input type="number" id="LP" value=0.352></p>
+                <p><label>$L_n [\mu m]$</label> <input type="number" id="LN" value=0.591></p>
+                <p><label>$N_c(300) [1/cm^3]$</label> <input type="number" id="Nc" value=2.78E19></p>
+                <p><label>$N_v(300) [1/cm^3]$</label> <input type="number" id="Nv" value=9.84E18></p>
+                <p><label>$E_g [eV]$</label> <input type="number" id="Eg" value=1.1205192307692307></p>
+            </fieldset>
+            <fieldset>
+                <p><label>$T [K]$</label> <input type="number" id="T" value=300></p>
+                <p><label>$V_{min} [V]$</label> <input type="number" id="Vmin" value=-1></p>
+                <p><label>$V_{max} [V]$</label> <input type="number" id="Vmax" value=1></p>
+            </fieldset>
+            <p><button type="button" onclick="plotn()">Replot</button></p>
+        </form>
+    </div>
+
+<h3>Sources</h3>
+<ul>
+    <li>Semiconductor Devices : Physics and Technology 3rd ISBN 9780470537947</li>
+    <li><a href="http://lampx.tugraz.at/~hadley/psd/L6/abrupt.html">Abrupt pn junctions in the depletion approximation</a></li>
+</ul>
 </body>
 
 </html>
