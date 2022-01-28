@@ -5,16 +5,14 @@
     <meta charset="utf-8">
     </meta>
     <style>
-        #form-container {
-
+        #parameter-form {
             background-color: lightgray;
-            padding: 10px;
+            width:200px;
         }
 
-        #form-container input {}
+        #parameter-form input {}
 
-        #form-container label {
-            display: inline-block;
+        #parameter-form label {
             width: 100px;
         }
 
@@ -164,31 +162,22 @@
         $$N_D>>N_A \rightarrow \frac{A^2}{C_j^2}=\frac{2(V_{bi}-V)}{\epsilon q N_A} $$
     </p>
     <div id="plot_C_T" style="width:400px;height:300px"></div>
-    <div id="form-container">
-        <form>
-            <label>$A [cm^2]$</label>
-            <input type="number" id="A" value=1><br />
-            <label>$N_D [1/cm^3]$</label>
-            <input type="number" id="ND" value=1e15><br />
-            <label>$N_A [1/cm^3]$</label>
-            <input type="number" id="NA" value=1e15><br />
-            <label>$V_{BI} [V]$</label>
-            <input type="number" id="VBI" value=0.7><br />
-            <label>$\epsilon$</label>
-            <input type="number" id="epsilon" value=1.4><br />
-            <label>$L_p [cm]$</label>
-            <input type="number" id="LP" value=1e-6><br />
-            <label>$p_{n0} [1/cm^3]$</label>
-            <input type="number" id="pn0" value=1e12><br />
-            <label>$T$ [$K$]</label>
-            <input type="number" id="T" value=300><br />
-            <label>$V_{min}$ [$V$]</label>
-            <input type="number" id="Vmin" value=-3><br />
-            <label>$V_{max}$ [$V$]</label>
-            <input type="number" id="Vmax" value=3><br />
-        </form>
-    </div>
-
+    
+    <form id="parameter-form">
+        <fieldset name="Parameters">
+            <p><label>$A [cm^2]$</label> <input type="number" id="A" value=1></p>
+            <p><label>$N_D [1/cm^3]$</label> <input type="number" id="ND" value=1e15></p>
+            <p><label>$N_A [1/cm^3]$</label> <input type="number" id="NA" value=1e15></p>
+            <p><label>$V_{BI} [V]$</label> <input type="number" id="VBI" value=0.7></p>
+            <p><label>$\epsilon$</label> <input type="number" id="epsilon" value=1.4></p>
+            <p><label>$L_p [cm]$</label> <input type="number" id="LP" value=1e-6></p>
+            <p><label>$p_{n0} [1/cm^3]$</label> <input type="number" id="pn0" value=1e12></p>
+            <p><label>$T$ [$K$]</label> <input type="number" id="T" value=300></p>
+            <p><label>$V_{min}$ [$V$]</label> <input type="number" id="Vmin" value=-3></p>
+            <p><label>$V_{max}$ [$V$]</label> <input type="number" id="Vmax" value=3></p>
+        </fieldset>
+    </form>
+    
     <h2>
         Diffusion Capacitance / forward bias
     </h2>
