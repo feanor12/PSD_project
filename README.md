@@ -1,6 +1,6 @@
 # Student project 
 
-Lecture: Physics of semiconductir devices @ TUGraz
+Lecture: Physics of semiconductor devices @ TUGraz
 
 Topic: Capacitance of a diode
 
