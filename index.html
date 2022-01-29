@@ -117,7 +117,7 @@
                 d2[k] = [V, Cd*1e5]
                 var W = Math.sqrt(epsilon*2*(NA + ND)*(VBI-V)/( qe * ND * NA)) 
                 var Cj = epsilon / W
-                d3[k] = [V,Cj]
+                d3[k] = [V,Cj*1e5]
                 var Cdp = Math.pow(qe, 2) * np0 * Ln / (kb * T) * Math.exp(qe * V / (kb * T))
                 d4[k] = [V, Cdp*1e5]
             }
