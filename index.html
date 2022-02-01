@@ -128,7 +128,7 @@
             var p1 = $.plot($("#plot_C_T"), data, {
                 series: {
                     color: "rgb(0, 0, 0)",
-                    lines: { show: true }
+                    lines: { show: true , linewidth: 2}
                 },
                 yaxis: {
                     position: 'left',
@@ -154,7 +154,7 @@
                 { data: d3, color: "black", lines: {show:true}, label: "Cⱼ"}]
             var p2 = $.plot("#plot_C_D", data, {
                 series: {
-                    lines: { show: true }
+                    lines: { show: true , linewidth: 2}
                 },
                 yaxis: {
                     position: 'left',
