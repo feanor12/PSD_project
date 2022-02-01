@@ -177,8 +177,8 @@
     </script>
 
     <h1>Capacitance of a Diode</h1>
-    <p>A diode has two capacitances and their individual contributions to the total 
-        capacitance depends on the applied bias. 
+    <p>A diode has two capacitances and their contributions to the total 
+        capacitance depend on the applied bias. 
         <ul>
             <li>In reverse bias, the depletion capacitance $C_j$ is dominant, which
                 behaves similarly to a plate capacitor.</li>
@@ -187,7 +187,7 @@
         </ul>    
     </p>
     <p>
-        In general, a capacitance is defined as the change of charge with respect to the applied voltage.
+        In general, capacitance is defined as the change of charge with respect to the applied voltage.
         $$C=\frac{dQ}{dU}$$
     </p>
 
@@ -207,9 +207,9 @@
         $$d = W = \sqrt{\frac{2\epsilon (N_A+N_D) (V_{bi}-V)}{qN_DN_A}}.$$
     </p>
     <p>
-    By replacing the \(d\) width \(W\) an expression for the depletion capacitance is obtained. This expression shows
+    By replacing the distance \(d\) with \(W\) an expression for the depletion capacitance is obtained. This expression shows
     that it depends on the build-in voltage \(V_{bi}\) of the diode, the doping concentrations of donors \(N_D\) and
-    acceptors \(N_A\), the dielectric constant \(\epsilon\), and the applied forward Voltage.
+    acceptors \(N_A\), the dielectric constant \(\epsilon\), and the applied forward voltage.
     $$C_j=\epsilon\frac{A}{W}=A \sqrt{\frac{\epsilon qN_DN_A}{2 (N_A+N_D) (V_{bi}-V)}}$$
     </p>
     <p>
@@ -220,7 +220,7 @@
 
     <h3>One-sided junctions</h3>
     <p>
-    For a one-sided junction which can be obatined by heavy dopeing of one side or by using a Schottky diode, the expression simplifies.
+    For a one-sided junction that can be obtained by heavily doping one side or by using a Schottky diode, the expression simplifies.
     This new expression can then be used to determine the doping concentration and the built-in voltage when the inverse of the squared specific 
     capacitance \(A^2/C^2(V)\) is fitted by a line.
     
@@ -231,9 +231,9 @@
     <h2>
         Diffusion Capacitance / Forward Bias
     </h2>
-    <p>Due to the small depletion width in forward bias additional minority carriers get injected into the neutral regions
-        of the PN junction. These carriers are stored in the neutral region and their concentraions drops exponentially with the distance from the depletion.
-        To calculate the additionally stored minority carriers in the neutral n side the denisty of exsess minority carriers is therefore
+    <p>Due to the small depletion width in forward-bias, additional minority carriers get injected into the neutral regions
+        of the PN junction. These carriers are stored in the neutral region and their concentrations drop exponentially with the distance from the depletion.
+        To calculate the additionally stored minority carriers in the neutral region of the n-side the density of excess minority carriers is
         integrated over the neutral n side.
     </p>
     <p>
@@ -242,16 +242,16 @@
     qp_{n0}L_p\left(\exp\left(\frac{qV}{k_B T} \right)-1\right)$$
     </p>
     <p>
-    Here $p_{n0}$ is the equilibrium minority carrier concentration on the n-side, $x_n$ is the position of the deplection zone edge,
+    Here $p_{n0}$ is the equilibrium minority carrier concentration on the n-side, $x_n$ is the position of the depletion zone edge,
     and $L_p$ is the diffusion length for the minority carriers.
     By using the definition of the capacitance the specific diffusion capacitance caused by the stored holes on the n-side can be calculated as:
     $$\frac{C_{D,p}}{A} = \frac{q^2p_{n0}L_p}{k_B T }\exp\left(\frac{qV}{k_B T }\right)$$
 
-    For the p-side a similar calculation can be done using the stored electrons.
+    For the p-side, a similar calculation can be done using the stored electrons.
     </p>
     <p>
         The minority carrier concentration or the built-in potential can be calculated using
-        the doping concentraions $N_A$ and $N_D$, the band gap $E_g$, the 
+        the doping concentrations $N_A$ and $N_D$, the bandgap $E_g$, the 
         temperature $T$, and the intrinsic 
         carrier concentrations $N_c$ and $N_v$.
         $$n_i^2 = Nc(300) Nv(300) \left(\frac{T}{300}\right)^3 \exp\left(-\frac{Eg}{kb T}\right), \quad  p_{n0} = \frac{n_i^2}{N_D}, \quad n_{p0} = \frac{n_i^2}{N_A} $$
