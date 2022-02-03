@@ -37,7 +37,7 @@ export default {
 
             this.plt_data.length = 0
 
-            for (k = 0; k < this.n; k++) {
+            for (let k = 0; k < this.n; k++) {
                 var V = k * (VBI - Vmin) / (this.n - 1) + Vmin
                 var W = Math.sqrt(epsilon * 2 * (NA + ND) * (VBI - V) / (qe * ND * NA))
                 var Cj = epsilon / W
