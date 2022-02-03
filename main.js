@@ -1,4 +1,5 @@
-import App from 'App.vue'
+import App from 'App.vue';
+
 const app = Vue.createApp({
     render: () => Vue.h(App)
 });
