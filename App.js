@@ -7,16 +7,16 @@ export default {
          </div>
   `,
     data: {
-        plt_data =[],
-        Vmin = -2,
-        Eg = 1.13,
-        Nc300 = 1,
-        Nv300 = 1,
-        NA = 1e13,
-        ND = 1e13,
-        epsilon = 12,
-        T = 300,
-        n = 200
+        plt_data: [],
+        Vmin: -2,
+        Eg: 1.13,
+        Nc300: 1,
+        Nv300: 1,
+        NA: 1e13,
+        ND: 1e13,
+        epsilon: 12,
+        T: 300,
+        n: 200
     },
     methods: {
         calc_Cj() {
