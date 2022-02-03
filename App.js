@@ -2,7 +2,7 @@
 export default {
     name:"App",
     template: `
-        <div id="p1" width="400px" height="400px"></div>
+        <div id="p1" style="width:400px;height:300px"></div>
     `,
     methods: {
         plot() {
