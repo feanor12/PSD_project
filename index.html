@@ -82,7 +82,7 @@
     </p>
 
     <h2>
-        Depletion Capacitance / Reverse Bias
+        Depletion Capacitance for an Abrupt Junction / Reverse Bias
     </h2>
     <p>
         In reverse bias, the depletion width grows bigger and the current through the depletion width is low. This
@@ -93,7 +93,7 @@
         $$C = \epsilon \frac{A}{d}$$
     </p>
     <p>
-        Using the definition of the depletion width \(W\) of a PN junction the distance \(d\) can be expressed as
+        Using the depletion width \(W\) of an abrupt PN junction the distance \(d\) can be expressed as
         $$d = W = \sqrt{\frac{2\epsilon (N_A+N_D) (V_{bi}-V)}{qN_DN_A}}.$$
     </p>
     <p>
@@ -118,14 +118,36 @@
         $$N_D>>N_A \rightarrow \frac{A^2}{C_j^2}=\frac{2(V_{bi}-V)}{\epsilon q N_A} $$
     </p>
 
+    <p>The doping concentration can be determined by the slope $k$, which can be obtained by measureing the $(A/C_j)^2$ for different reverse bias voltages.
 
+        $$k = \frac{-2}{\epsilon q N_{D,A}}$$
+    </p>
+
+    <p>
+        By extrapolating to $(A/C_j)^2$ to the voltage where $(A/C_j)^2 = 0$ the built-in voltage is determined, because in our approximation the capacitance diverges when $V=V_{bi}$. 
+    </p>
 
     <div id="app"></div>
+
+    <h2>Determine the Doping Profile</h2>
+    <p>
+        In the depletion approximation the doping for a one-sided junction can also be determined as a function of the position.
+        As we integrate the charge over the deplection width on one side of the junction we can obtain the total charge of the doping. This can also be written as a differential:
+        $$dQ = q*N_D(W)dW$$
+        By using that $dQ = C dV$ and $dW = -\epsilon C^{-2}dC$ this can be rewritten to
+        $$ C dV = qN_D(W) -\epsilon C^{-2}dC $$
+        By solving for $N_D(W)$ we obtain a way of measureing the doping profile at different positions.
+        $$ N_D(W) = \frac{-C^3}{q\epsilon }/\frac{dC}{dV} $$
+    </p>
+
 
 <h3>Sources</h3>
 <ul>
     <li>Semiconductor Devices : Physics and Technology 3rd ISBN 9780470537947</li>
     <li><a href="http://lampx.tugraz.at/~hadley/psd/L6/abrupt.html">Abrupt pn junctions in the depletion approximation</a></li>
+    <li>Hilibrand, J. & Gold, R.D. (1960) “Determination of impurity distribution in junction diodes from
+capacitance-voltage measurements”. RCA Review, No.21, pp 245-52, RCA Laboratories, Princeton,
+NJ, June 1960, 0033-6831.</li>
 </ul>
 
 
