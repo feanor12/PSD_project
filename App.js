@@ -15,7 +15,7 @@ export default {
             </p>
         </fieldset>
         <fieldset>
-            <p><label>$\epsilon [\epsilon_0]$</label> <input type="number" v-model.number="epsilon" @change="update"></p>
+            <p><label>$\\epsilon [\\epsilon_0]$</label> <input type="number" v-model.number="epsilon" @change="update"></p>
             <p><label>$N_c(300) [1/cm^3]$</label> <input type="number" v-model.number="Nc300" @change="update"></p>
             <p><label>$N_v(300) [1/cm^3]$</label> <input type="number" v-model.number="Nv300" @change="update"></p>
             <p><label>$E_g [eV]$</label> <input type="number"  v-model.number="Eg" @change="update"></p>
