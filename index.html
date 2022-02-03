@@ -132,11 +132,12 @@
     <h2>Determine the Doping Profile</h2>
     <p>
         In the depletion approximation, the doping for a one-sided junction can also be determined as a function of the position.
-        As we integrate the charge over the depletion width on one side of the junction we can obtain the total charge of the dopants. This can also be written as the differential:
-        $$\frac{dQ}{dW} = q*N_D(W)$$
+        To derive the needed expression we can start by thinking about the charge on one side of the junction. 
+        A small area in the depletion width $dW$ would hold the charge $dQ$ which is proportional to the elementary charge times the doping concentration  $N$ in this area. 
+        $$\frac{dQ}{dW} = q*N(W)$$
         By using that $dQ = C dV$ and $dW = -\epsilon C^{-2}dC$ this can be rewritten as
-        $$ C dV = qN_D(W) -\epsilon C^{-2}dC $$
-        By solving for $N_D(W)$ we obtain a way of measuring the doping profile at different positions.
+        $$ C dV = qN(W) -\epsilon C^{-2}dC $$
+        By solving for $N_D(W)$ we obtain an expression for the doping profile as a function of position.
         $$ N_D(W) = \frac{-C^3}{q\epsilon }/\frac{dC}{dV} $$
     </p>
 
