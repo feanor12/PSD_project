@@ -45,6 +45,13 @@ export default {
             n: 200
         }
     },
+    computed:{
+        NA: {
+            get: function(){
+                this.NA.toExponential()
+            }
+        }
+    },
     methods: {
         calc_Cj() {
             var kb = 1.380658E-23;
