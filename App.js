@@ -5,7 +5,7 @@ export default {
         <div id ="inputs">
         <form id="parameter-form">
         <fieldset>
-            <p><label>$N_D [1/cm^3]$</label> <input v-model.number="ND" type="number"></p>
+            <p><label>$N_D [1/cm^3]$</label> <input v-model.number="ND" type="number" @change="update"></p>
             <p><label>$N_A [1/cm^3]$</label> <input type="number" id="NA" value=1e15></p>
         </fieldset>
         <fieldset>
@@ -21,7 +21,7 @@ export default {
             <p><label>$V_{min} [V]$</label> <input type="number" id="Vmin" value=-1></p>
             <p><label>$V_{max} [V]$</label> <input type="number" id="Vmax" value=1></p>
         </fieldset>
-        <p><button type="button" onclick="plotn()">Replot</button></p>
+        <p><button type="button" >Replot</button></p>
     </form>
         </div>
         <div id="plots">
@@ -95,10 +95,13 @@ export default {
                         show: true
                     }
                 })
+        },
+        update(){
+            this.calc_Cj()
+            this.plot()
         }
     },
     mounted() {
-        this.calc_Cj()
-        this.plot()
+        this.update()
     }
 }
