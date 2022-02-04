@@ -4,8 +4,8 @@ export default {
     template: `
         <div style="display:flex;flex-wrap:wrap">
         <div id="plots" style="flex-grow:1;display:flex;flex-direction:column;">
-            <div id="plot_one_over_Cj_squared" style="width:100%;min-height:200px;min-width:400px;height:100%"></div>
-            <div id="plot_Cj" style="width:100%;min-width:100px;min-height:200px;height:400%"></div>
+            <div id="plot_one_over_Cj_squared" style="width:100%;min-height:200px;min-width:200px;height:100%"></div>
+            <div id="plot_Cj" style="width:100%;min-width:200px;min-height:200px;height:100%"></div>
         </div>
         <div id ="input">
         <form id="parameter-form">
