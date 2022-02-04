@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Capacitance of a Diode</title>
-    <meta name="author" content="Michael Pusterhofer"></meta>
+    <meta name="author" content="Michael Pusterhofer">
+    </meta>
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flot@4.2.1/dist/es5/jquery.flot.min.js"></script>
@@ -12,12 +13,11 @@
     <script type="module" src="./main.js"></script>
 
     <style>
-
         #parameter-form fieldset p {
-            float:left;
+            float: left;
         }
 
-        #parameter-form::after{
+        #parameter-form::after {
             clear: both;
         }
 
@@ -67,14 +67,14 @@
     <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <h1>Capacitance of a Diode</h1>
-    <p>A diode has two capacitances and their contributions to the total 
-        capacitance depend on the applied bias. 
-        <ul>
-            <li>In reverse bias, the depletion capacitance $C_j$ is dominant, which
-                behaves similarly to a plate capacitor.</li>
-            <li>In forward bias, the diffusive capacitance is dominant, which is caused
-                    by the diffusion current that makes it through the reduced depletion width.</li>
-        </ul>    
+    <p>A diode has two capacitances and their contributions to the total
+        capacitance depend on the applied bias.
+    <ul>
+        <li>In reverse bias, the depletion capacitance $C_j$ is dominant, which
+            behaves similarly to a plate capacitor.</li>
+        <li>In forward bias, the diffusive capacitance is dominant, which is caused
+            by the diffusion current that makes it through the reduced depletion width.</li>
+    </ul>
     </p>
     <p>
         In general, capacitance is defined as the change of charge with respect to the applied voltage.
@@ -86,7 +86,7 @@
     </h2>
     <p>
         In reverse bias, the depletion width grows bigger and the current through the depletion width is low. This
-        resembles a capacitor where the contacts are highly conductive and the dielectric has a high resistivity. 
+        resembles a capacitor where the contacts are highly conductive and the dielectric has a high resistivity.
     </p>
     <p>The capacitance of a plate capacitor is defined by the dielectric constant \(\epsilon\), the
         area \(A\) of the opposing plates and the distance \(d\) of these plates.
@@ -97,43 +97,50 @@
         $$d = W = \sqrt{\frac{2\epsilon (N_A+N_D) (V_{bi}-V)}{qN_DN_A}}.$$
     </p>
     <p>
-    By replacing the distance \(d\) with \(W\) an expression for the depletion capacitance is obtained. This expression shows
-    that it depends on the build-in voltage \(V_{bi}\) of the diode, the doping concentrations of donors \(N_D\) and
-    acceptors \(N_A\), the dielectric constant \(\epsilon\), and the applied forward voltage.
-    $$C_j=\epsilon\frac{A}{W}=A \sqrt{\frac{\epsilon qN_DN_A}{2 (N_A+N_D) (V_{bi}-V)}}$$
+        By replacing the distance \(d\) with \(W\) an expression for the depletion capacitance is obtained. This
+        expression shows
+        that it depends on the build-in voltage \(V_{bi}\) of the diode, the doping concentrations of donors \(N_D\) and
+        acceptors \(N_A\), the dielectric constant \(\epsilon\), and the applied forward voltage.
+        $$C_j=\epsilon\frac{A}{W}=A \sqrt{\frac{\epsilon qN_DN_A}{2 (N_A+N_D) (V_{bi}-V)}}$$
     </p>
     <p>
-    This relation can then be used to determine the built-in voltage by fitting a line for \(C^{-2}(V)\)
+        This relation can then be used to determine the built-in voltage by fitting a line for \(C^{-2}(V)\)
         $$\frac{1}{C_j^2}=\frac{2 (N_A+N_D) (V_{bi}-V)}{\epsilon A^2 qN_DN_A}=
         \frac{2 (N_A+N_D) V_{bi}}{\epsilon A^2 qN_DN_A}-\frac{2 (N_A+N_D) V}{\epsilon A^2 qN_DN_A}$$</p>
     <p>
 
     <h3>One-sided junctions</h3>
     <p>
-    For a one-sided junction that can be obtained by heavily doping one side or by using a Schottky diode, the expression simplifies.
-    This new expression can then be used to determine the doping concentration and the built-in voltage when the inverse of the squared specific 
-    capacitance \(A^2/C^2(V)\) is fitted by a line.
-    
+        For a one-sided junction that can be obtained by heavily doping one side or by using a Schottky diode, the
+        expression simplifies.
+        This new expression can then be used to determine the doping concentration and the built-in voltage when the
+        inverse of the squared specific
+        capacitance \(A^2/C^2(V)\) is fitted by a line.
+
         $$N_A>>N_D \rightarrow \frac{A^2}{C_j^2}=\frac{2(V_{bi}-V)}{\epsilon q N_D} $$
         $$N_D>>N_A \rightarrow \frac{A^2}{C_j^2}=\frac{2(V_{bi}-V)}{\epsilon q N_A} $$
     </p>
 
-    <p>The doping concentration can be determined by the slope $k$, which can be obtained by measureing the $(A/C_j)^2$ for different reverse bias voltages.
+    <p>The doping concentration can be determined by the slope $k$, which can be obtained by measureing the $(A/C_j)^2$
+        for different reverse bias voltages.
 
         $$k = \frac{-2}{\epsilon q N_{D,A}}$$
     </p>
 
     <p>
-        By extrapolating to $(A/C_j)^2$ to the voltage where $(A/C_j)^2 = 0$ the built-in voltage is determined, because in our approximation the capacitance diverges when $V=V_{bi}$. 
+        By extrapolating to $(A/C_j)^2$ to the voltage where $(A/C_j)^2 = 0$ the built-in voltage is determined, because
+        in our approximation the capacitance diverges when $V=V_{bi}$.
     </p>
 
     <div id="app"></div>
 
     <h2>Determine the Doping Profile</h2>
     <p>
-        In the depletion approximation, the doping for a one-sided junction can also be determined as a function of the position.
-        To derive the needed expression we can start by thinking about the charge on one side of the junction. 
-        A small area in the depletion width $dW$ would hold the charge $dQ$ which is proportional to the elementary charge times the doping concentration  $N$ in this area. 
+        In the depletion approximation, the doping for a one-sided junction can also be determined as a function of the
+        position.
+        To derive the needed expression we can start by thinking about the charge on one side of the junction.
+        A small area in the depletion width $dW$ would hold the charge $dQ$ which is proportional to the elementary
+        charge times the doping concentration $N$ in this area.
         $$\frac{dQ}{dW} = q N(W)$$
         By using that $dQ = C dV$ and $dW = -\epsilon C^{-2}dC$ this can be rewritten as
         $$ C dV = qN(W) -\epsilon C^{-2}dC $$
@@ -142,16 +149,21 @@
     </p>
 
 
-<h3>Sources</h3>
-<ul>
-    <li>Semiconductor Devices : Physics and Technology 3rd ISBN 9780470537947</li>
-    <li><a href="http://lampx.tugraz.at/~hadley/psd/L6/abrupt.html">Abrupt pn junctions in the depletion approximation</a></li>
-    <li>Hilibrand, J. & Gold, R.D. (1960) “Determination of impurity distribution in junction diodes from
-capacitance-voltage measurements”. RCA Review, No.21, pp 245-52, RCA Laboratories, Princeton,
-NJ, June 1960, 0033-6831.</li>
-</ul>
+    <h3>Sources</h3>
+    <ul>
+        <li>Semiconductor Devices : Physics and Technology 3rd ISBN 9780470537947</li>
+        <li><a href="http://lampx.tugraz.at/~hadley/psd/L6/abrupt.html">Abrupt pn junctions in the depletion
+                approximation</a></li>
+        <li>Hilibrand, J. & Gold, R.D. (1960) “Determination of impurity distribution in junction diodes from
+            capacitance-voltage measurements”. RCA Review, No.21, pp 245-52, RCA Laboratories, Princeton,
+            NJ, June 1960, 0033-6831.</li>
+        <li><a href="https://arxiv.org/ftp/arxiv/papers/1011/1011.3463.pdf"> Cristea, Miron J. "Capacitance-voltage
+                profiling techniques for characterization of semiconductor materials and devices." arXiv preprint
+                arXiv:1011.3463 (2010).</a></li>
+    </ul>
 
 
 
 </body>
+
 </html>
