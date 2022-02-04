@@ -6,6 +6,7 @@
     <title>Capacitance of a Diode</title>
     <meta name="author" content="Michael Pusterhofer">
     </meta>
+    <meta name = "viewport" content="width=device-width,inital_scale=1">
 
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flot@4.2.1/dist/es5/jquery.flot.min.js"></script>
@@ -38,12 +39,22 @@
         #parameter-form label mjx-container {
             float: right;
         }
-
+        @media (min-width: 800px){
         body {
             width: 800px;
             margin: auto;
             color: #222;
             background-color: #eee;
+        }
+        }
+
+        @media (min-width: 400px){
+        body {
+            width: 100%;
+            margin: auto;
+            color: #222;
+            background-color: #eee;
+        }
         }
 
         #plots {
