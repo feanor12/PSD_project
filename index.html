@@ -93,7 +93,7 @@
         $$C = \epsilon \frac{A}{d}$$
     </p>
     <p>
-        Using the depletion width \(W\) of an abrupt PN junction the distance \(d\) can be expressed as
+        Using the depletion width \(W\) of an abrupt PN junction using the forward bias $V$ the distance \(d\) can be expressed as
         $$d = W = \sqrt{\frac{2\epsilon (N_A+N_D) (V_{bi}-V)}{qN_DN_A}}.$$
     </p>
     <p>
@@ -142,10 +142,11 @@
         A small area in the depletion width $dW$ would hold the charge $dQ$ which is proportional to the elementary
         charge times the doping concentration $N$ in this area.
         $$\frac{dQ}{dW} = q N(W)$$
-        By using that $dQ = C dV$ and $dW = -\epsilon C^{-2}dC$ this can be rewritten as
-        $$ C dV = qN(W) -\epsilon C^{-2}dC $$
+        By using that $dQ = C dV_r$ and $dW = -\epsilon C^{-2}dC$, where $dV_r$ is an increased reverse bias, $dW$ is the increased depletion width
+        and $dQ$ is the additional charge in $dW$ this can be rewritten as
+        $$ C dV_r = qN(W) -\epsilon C^{-2}dC $$
         By solving for $N(W)$ we obtain an expression for the doping profile as a function of position.
-        $$ N(W) = \frac{-C^3}{q\epsilon }/\frac{dC}{dV}  = \frac{2}{q\epsilon }/\frac{dC^-2}{dV}$$
+        $$ N(W) = \frac{-C^3}{q\epsilon }/\frac{dC}{dV_r}  = \frac{2}{q\epsilon }/\frac{dC^-2}{dV_r} = \frac{-2}{q\epsilon }/\frac{dC^-2}{dV}$$
     </p>
 
 
